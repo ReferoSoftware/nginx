@@ -1,0 +1,69 @@
+upstream php {
+    server __PHP_FPM_HOST__:__PHP_FPM_PORT__;
+}
+
+server {
+  listen __LISTEN_PORT__ backlog=16384;
+  root   __APP_ROOT__;
+  index  index.php;
+
+  # Always bare domain
+  if ($host ~* www\.(.*)) {
+    set $redirect_required 1;
+    set $required_host $1;
+  }
+
+  # Remove trailing slashes
+  rewrite ^/(.*)/$ /$1 permanent;
+
+  # Use any of the following two
+  real_ip_header    X-Forwarded-For;
+  real_ip_recursive on;
+
+  # Enable Gzip compression.
+  gzip on;
+  gzip_proxied any;
+  gzip_types
+    text/css
+    text/javascript
+    text/xml
+    text/plain
+    application/javascript
+    application/x-javascript
+    application/json;
+
+  # location /socket.io {
+  #   proxy_pass http://echo:6001;
+  #   proxy_http_version 1.1;
+  #   proxy_set_header Upgrade $http_upgrade;
+  #   proxy_set_header Connection 'upgrade';
+  #   proxy_set_header Host $host;
+  #   proxy_cache_bypass $http_upgrade;
+  # }
+
+  # Media: images, icons, video, audio, HTC
+  location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc|woff|woff2|ttf|otf)$ {
+    access_log off;
+  }
+
+  # CSS and Javascript
+  location ~* \.(?:css|js)$ {
+    access_log off;
+  }
+
+  location / {
+    try_files $uri $uri/ /index.php?$query_string;
+   }
+
+  location ~ \.php$ {
+    fastcgi_pass_request_headers on;
+
+    include        fastcgi_params;
+    fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+    fastcgi_index  index.php;
+    fastcgi_pass   php;
+  }
+
+  include /etc/nginx/conf.d/extras/*.conf
+}
+
