@@ -12,7 +12,9 @@ sed -e "s/__LISTEN_PORT__/$_LISTEN_PORT/g" /etc/nginx/conf.d/default.conf.templa
 	sed -e "s|__APP_ROOT__|$_APP_ROOT|g" \
 	> /etc/nginx/conf.d/default.conf
 
-cp /docker-entrypoint-extras.d/*.conf /etc/nginx/conf.d/extras
+if [ "$(ls -l /docker-entrypoint-extras.d/*.conf | wc -l)" -gt 0 ]; then
+	cp /docker-entrypoint-extras.d/*.conf /etc/nginx/conf.d/extras
+fi
 
 chown -R 1001:1001 /etc/nginx/conf.d/extras
 
