@@ -21,16 +21,16 @@ chown -R 1001:1001 /etc/nginx/conf.d/extras
 # The actual script should ideally use your application code to connect to the dependent service in the usual manner
 # This helps make the applications more resilient by avoiding race conditions
 # If the file doesn't exist, this will do nothing...
-if [ -f $_APP_DIR/readiness-probe ]; then
-	chmod +x $_APP_DIR/readiness-probe
+# if [ -f $_APP_DIR/readiness-probe ]; then
+# 	chmod +x $_APP_DIR/readiness-probe
 
-	$_APP_DIR/readiness-probe
+# 	$_APP_DIR/readiness-probe
 
-	if [ $? -ne 0 ]; then
-		echo 'The application is not ready, and could not be started';
-		exit 1;
-	fi
-fi
+# 	if [ $? -ne 0 ]; then
+# 		echo 'The application is not ready, and could not be started';
+# 		exit 1;
+# 	fi
+# fi
 
 # This is required so we can change the command run upon starting up
 if [ "$#" -gt "0" ]; then
