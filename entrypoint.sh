@@ -7,9 +7,9 @@ _PHP_FPM_PORT=${PHP_FPM_PORT:-9000}
 
 # Replace the comnfigurable host and port by replacing the 
 sed -e "s/__LISTEN_PORT__/$_LISTEN_PORT/g" /etc/nginx/conf.d/default.conf.template |\
-	sed -e "s/__PHP_FPM_HOST__/$_PHP_FPM_HOST/g" \
-	sed -e "s/__PHP_FPM_PORT__/$_PHP_FPM_PORT/g" \
-	sed -e "s/__APP_ROOT__/$_APP_ROOT/g" \
+	sed -e "s/__PHP_FPM_HOST__/$_PHP_FPM_HOST/g" |\
+	sed -e "s/__PHP_FPM_PORT__/$_PHP_FPM_PORT/g" |\
+	sed -e "s|__APP_ROOT__|$_APP_ROOT|g"
 	> /etc/nginx/conf.d/default.conf
 
 cp /docker-entrypoint-extras.d/*.conf /etc/nginx/conf.d/extras
