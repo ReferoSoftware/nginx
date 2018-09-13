@@ -26,6 +26,6 @@ services:
     volumes_from:
       - app-volume
     environment:
-      LISTEN_HOST: 127.0.0.1
+      LISTEN_HOST: 0.0.0.0
       LISTEN_PORT: 9000
       APP_DIR: "/custom/location"
