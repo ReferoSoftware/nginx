@@ -14,11 +14,11 @@ sed -e "s/__LISTEN_PORT__/$_LISTEN_PORT/g" /etc/nginx/conf.d/default.conf.templa
 	> /etc/nginx/conf.d/default.conf
 
 # If there aren't any we get errors from the entrypoint
-if [ "$_EXTRAS_COUNT" -gt 1 ]; then 
+if [ "$_EXTRAS_COUNT" -gt "0" ]; then 
 	cp /docker-entrypoint-extras.d/*.conf /etc/nginx/conf.d/extras
 fi
 
-# This is required so we can change the command run upon starting up
+# This is required so we can change the command that is run when starting up
 if [ "$#" -gt "0" ]; then
 	$@
 	exit "$?"

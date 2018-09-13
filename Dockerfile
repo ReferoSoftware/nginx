@@ -15,8 +15,8 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY mime.types /etc/nginx/mime.types
 COPY conf.d/default.conf.template /etc/nginx/conf.d/default.conf.template
 
-# There is an include directive within default .conf in the server directive
-# It includes these files allowing extra configuration to be supplied from a higher level
+# There is an include directive within default.conf.template in the server directive
+# It includes these files allowing extra configuration to be supplied from higher up the stack
 RUN mkdir /etc/nginx/conf.d/extras
 
 # Files in here will be copied into /etc/nginx/conf.d/extras by the entrypoint
@@ -34,10 +34,8 @@ RUN chown -R 1001:1001 /etc/nginx/conf.d/extras
 RUN chown -R 1001:1001 /docker-entrypoint-extras.d
 
 # We've got a custom entrypoint script, which isn't doing much right now
-# In the future it should contain two things:
-# - A test/wait loop for the php-fpm instance (should only start when it can reach php-fpm)
-# - A way to configure ports (i.e listen directive) and hosts (i.e. php-fpm) via env variables
-# ^ These will make this image far more portable and prevent us having to create new images for a simple port change
+# In the future it should contain a test/wait loop for the php-fpm instance
+# it should only start when it can reach php-fpm
 COPY entrypoint.sh /entrypoint.sh
 RUN chown 1001:1001 /entrypoint.sh
 RUN chmod +x /entrypoint.sh

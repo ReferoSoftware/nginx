@@ -32,15 +32,6 @@ server {
     application/x-javascript
     application/json;
 
-  # location /socket.io {
-  #   proxy_pass http://echo:6001;
-  #   proxy_http_version 1.1;
-  #   proxy_set_header Upgrade $http_upgrade;
-  #   proxy_set_header Connection 'upgrade';
-  #   proxy_set_header Host $host;
-  #   proxy_cache_bypass $http_upgrade;
-  # }
-
   # Media: images, icons, video, audio, HTC
   location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc|woff|woff2|ttf|otf)$ {
     access_log off;
